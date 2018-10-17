@@ -33,6 +33,10 @@ public class Case implements Observable {
     private int posY;
 
     /**
+     * Indique si la case est utilisable dans un jeu
+     */
+    private boolean inGame;
+    /**
      * Cosntructeur.
      *
      * @param posX position de la case horizontalement.
@@ -41,6 +45,7 @@ public class Case implements Observable {
     public Case(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
+        this.inGame = true;
     }
 
     /**
@@ -123,6 +128,28 @@ public class Case implements Observable {
         this.selected = selected;
         this.notifyObservers();
     }
+
+
+
+    public boolean canGo () {
+
+        return (this.inGame);
+
+    }
+
+    public void setInGame(boolean bool){
+        this.inGame = bool;
+    }
+    public boolean getInGame(){
+        return this.inGame;
+    }
+
+
+    public boolean isEmpty(){
+        return(this.value == 0);
+    }
+
+
 
 
 

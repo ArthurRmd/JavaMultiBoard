@@ -1,5 +1,6 @@
 package game;
 
+import gui.Menu;
 import observer.Observer;
 
 import java.awt.Color;
@@ -22,11 +23,80 @@ public class Solitaire extends Game {
         int dimX = board.getDimX();
         int dimY = board.getDimY();
 
-       // this.remplir();
+
+
+       board.getCase(0,0).setValue(0);
+
+       board.getCase(0,0).canGo();
+
+
+        System.out.println(board.getCase(0,0).isEmpty());
+        this.remplir(x);
+
+        bougerPion(board.getCase(4,4), board.getCase(3,3));
+
+       //pasTrouver(x);
+
+
+
+
 
 
         System.out.println("construction d'un Solitaire " + dimX + "x" + dimY);
     }
+
+
+    public void bougerPion(Case anciennePosition, Case nouvellePosition){
+
+        if ( nouvellePosition.getInGame() &&  anciennePosition.getInGame() &&  nouvellePosition.getValue() == 0){
+            nouvellePosition.setValue(1);
+            anciennePosition.setValue(0);
+        }
+
+    }
+
+
+    public void pasTrouver (int x){
+
+        boolean continuer = false;
+        int nombreSelectionne = 0;
+        int i,j;
+
+        while (!continuer){
+
+
+
+            for ( i=0 ; i<x; i++) {
+
+
+                for (j = 0; j < x; j++) {
+
+                        if (board.getCase(i,j).isSelected()){
+                            nombreSelectionne++;
+
+                        }
+                }
+
+            }
+
+            if (nombreSelectionne == 2){
+                continuer = true ;
+            }
+            else {
+                nombreSelectionne = 0;
+            }
+        }
+
+        System.out.println("ok");
+
+    }
+
+
+
+
+
+
+
 
     /**
      * Méthode qui décrit ce qui se passe lorsqu'un pion est déposé.
@@ -34,10 +104,8 @@ public class Solitaire extends Game {
      * @param x position horizontale
      * @param y position verticale
      */
-    @Override
-    public void playAtPosition(int x, int y) {
-        System.out.println("not yet implemented");
-    }
+
+
 
     /**
      * Calcule le score.
@@ -56,31 +124,109 @@ public class Solitaire extends Game {
         return colorPawnList;
     }
 
-   /*
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public void playAtPosition ( int x, int y ) {
-        this.board.getCase(x,y).setSelected(true);
+
+
+        if ( board.getCase(x,y).isSelected()) {
+            this.board.getCase(x,y).setSelected(false);
+        }
+        else {
+            this.board.getCase(x, y).setSelected(true);
+        }
     }
-    */
 
 
 
-   /* public void remplir () {
+
+
+    public void remplir (int x) {
 
         int i;
         int j;
-        int valeur = (int)(7%2);
+        int valeurHaut =  ((x - 3)/2); // 7 -> 2
+        int valeurBas =  ((x - 3)/2); // 7 -> 2
+        int valeur =  ((x - 3)/2); // 7 -> 2
 
-        for ( i=0 ; i<8; i++) {
+        int valeurGauche = ((x - 3)/2) - 1; // 7 -> 2
+        int valeurDroite =  1;
 
-            for ( j=0 ; j<8; j++) {
 
-                board.getCase(i,j).setValue(1);
+
+
+
+        System.out.println(valeurHaut);
+
+        for ( i=0 ; i<x; i++) {
+
+            if (i > (valeur + 3)) {
+                valeurGauche--;
+                valeurDroite++;
+            }
+
+            for ( j=0 ; j<x; j++) {
+
+                if ( i < valeur){
+
+                    if (j >= valeurHaut && j< ( x-valeurHaut)){
+                        board.getCase(j,i).setValue(1);
+                        board.getCase(i,j).setInGame(true);
+
+
+
+                    }
+                    else {
+                        board.getCase(j,i).setValue(0);
+                        board.getCase(i,j).setInGame(false);
+                    }
+
+                }
+                else if (i >= (x - valeur)){
+
+                    if (j >= (valeurBas - valeurGauche) && j< ( x- valeurDroite)){
+                        board.getCase(j,i).setValue(1);
+                        board.getCase(i,j).setInGame(true);
+
+                    }
+                    else {
+                        board.getCase(j,i).setValue(0);
+                        board.getCase(i,j).setInGame(false);
+                    }
+                }
+                else {
+
+                    board.getCase(j,i).setValue(1);
+                    board.getCase(i,j).setInGame(true);
+                }
+
+
+
 
             }
 
+            valeurHaut--;
 
         }
-    }*/
+
+        int middle = ((x - 3)/2)+1;
+        board.getCase(middle,middle).setValue(0);
+
+
+
+
+    }
 
 }

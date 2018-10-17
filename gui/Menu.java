@@ -117,11 +117,18 @@ public class Menu {
 
 
 
+
+
+
+    }
+
+
+    public int getMenu(){
+        return this.valeur;
     }
 
 
 
-
-
-
 }
+
+
