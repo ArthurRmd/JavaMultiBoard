@@ -150,6 +150,14 @@ public class Case implements Observable {
     }
 
 
+    public int getX (){
+        return this.posX;
+    }
+
+    public int getY (){
+        return this.posY;
+    }
+
 
 
 

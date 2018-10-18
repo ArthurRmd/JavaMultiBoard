@@ -17,11 +17,14 @@ import java.util.ArrayList;
  */
 public class Solitaire extends Game {
 
+    Case caseSelection = null;
+
     public Solitaire(int x, int y) {
         board = new Board(x, y, "solitaire");
 
         int dimX = board.getDimX();
         int dimY = board.getDimY();
+
 
 
 
@@ -35,7 +38,6 @@ public class Solitaire extends Game {
 
         bougerPion(board.getCase(4,4), board.getCase(3,3));
 
-       //pasTrouver(x);
 
 
 
@@ -54,47 +56,7 @@ public class Solitaire extends Game {
         }
 
     }
-
-
-    public void pasTrouver (int x){
-
-        boolean continuer = false;
-        int nombreSelectionne = 0;
-        int i,j;
-
-        while (!continuer){
-
-
-
-            for ( i=0 ; i<x; i++) {
-
-
-                for (j = 0; j < x; j++) {
-
-                        if (board.getCase(i,j).isSelected()){
-                            nombreSelectionne++;
-
-                        }
-                }
-
-            }
-
-            if (nombreSelectionne == 2){
-                continuer = true ;
-            }
-            else {
-                nombreSelectionne = 0;
-            }
-        }
-
-        System.out.println("ok");
-
-    }
-
-
-
-
-
+    
 
 
 
@@ -140,6 +102,8 @@ public class Solitaire extends Game {
     @Override
     public void playAtPosition ( int x, int y ) {
 
+        int posX, posY;
+
 
         if ( board.getCase(x,y).isSelected()) {
             this.board.getCase(x,y).setSelected(false);
@@ -147,6 +111,25 @@ public class Solitaire extends Game {
         else {
             this.board.getCase(x, y).setSelected(true);
         }
+
+        if (caseSelection == null || caseSelection == board.getCase(x,y) ){
+            caseSelection = board.getCase(x,y);
+        }
+        else {
+            System.out.println("Bonjour");
+
+            posX = caseSelection.getX();
+            posY = caseSelection.getY();
+            this.board.getCase(posX, posY).setSelected(false);
+
+            this.board.getCase(x, y).setSelected(false);
+            caseSelection = null;
+
+            bougerPion(board.getCase(posX,posY), board.getCase(x,y));
+        }
+
+
+
     }
 
 
