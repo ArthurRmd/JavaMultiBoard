@@ -54,6 +54,24 @@ public class JCase extends JPanel implements Observer {
         c.addObserver(this);
     }
 
+
+
+    public JCase(Case c, Color color, Arbiter a , Color co) {
+
+        this.c = c;
+        this.color = color;
+
+        colorPawnList.add(Color.WHITE);
+        colorPawnList.add(Color.BLACK);
+
+        addMouseListener(a);
+
+        // écoute des évenements de la case
+        c.addObserver(this);
+    }
+
+
+
     /**
      * Méthode de l'interface Observer
      */

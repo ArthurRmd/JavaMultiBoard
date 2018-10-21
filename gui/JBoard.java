@@ -38,4 +38,35 @@ public class JBoard extends JPanel {
             }
         }
     }
+
+
+    public JBoard(Board board, Arbiter a, List<Color> listColor, Color c1 , Color c2) {
+        this.b = board;
+
+
+
+        int dimX = b.getDimX();
+        int dimY = b.getDimY();
+
+        // carefull : GridLayout (row, col) !!
+        this.setLayout(new GridLayout(dimY, dimX));
+
+        for (int j = 0; j < dimY; j++) {
+            for (int i = 0; i < dimX; i++) {
+
+                if ( ((i+j+1)%2) == 1 ) {
+                    JCase jc = new JCase(b.getCase(i, j), c1, a, Color.red);
+                    jc.setColorPawnList(listColor);
+                    this.add(jc);
+                }
+                else {
+                    JCase jc = new JCase(b.getCase(i, j), c2, a);
+                    jc.setColorPawnList(listColor);
+                    this.add(jc);
+                }
+
+
+            }
+        }
+    }
 }

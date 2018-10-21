@@ -17,6 +17,8 @@ public class Case implements Observable {
 
     private boolean selected = false;
 
+    public int pionSpecial;
+
     /**
      * Valeur du pion de la case (0 si vide).
      */
@@ -45,8 +47,10 @@ public class Case implements Observable {
     public Case(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
+        this.pionSpecial = 0;
         this.inGame = true;
     }
+
 
     /**
      * liste des observer
@@ -125,9 +129,26 @@ public class Case implements Observable {
 
 
     public void setSelected (boolean selected) {
-        this.selected = selected;
-        this.notifyObservers();
+
+        if (this.canGo()){
+            this.selected = selected;
+            this.notifyObservers();
+        }
+        else {
+            System.out.println("Case hors jeu");
+        }
+
     }
+
+
+    public void setPionSpecial (int x){
+        this.pionSpecial = x;
+    }
+
+    public int getPionSpecial (){
+        return pionSpecial;
+    }
+
 
 
 

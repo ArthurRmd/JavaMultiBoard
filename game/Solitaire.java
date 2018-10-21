@@ -26,7 +26,7 @@ public class Solitaire extends Game {
         int dimY = board.getDimY();
 
 
-
+        System.out.println(board.getDimX()+ "\n\n");
 
        board.getCase(0,0).setValue(0);
 
@@ -36,7 +36,10 @@ public class Solitaire extends Game {
         System.out.println(board.getCase(0,0).isEmpty());
         this.remplir(x);
 
-        bougerPion(board.getCase(4,4), board.getCase(3,3));
+       // bougerPion(board.getCase(4,4), board.getCase(3,3));
+
+
+
 
 
 
@@ -56,7 +59,7 @@ public class Solitaire extends Game {
         }
 
     }
-    
+
 
 
 
@@ -120,12 +123,18 @@ public class Solitaire extends Game {
 
             posX = caseSelection.getX();
             posY = caseSelection.getY();
-            this.board.getCase(posX, posY).setSelected(false);
+            this.board.getCase(posX, posY).setSelected(false); // premier pion choisi ( celui qui va se déplacer
 
-            this.board.getCase(x, y).setSelected(false);
+            this.board.getCase(x, y).setSelected(false); // la deuxieme case chosi (vide)
+
+
+            System.out.println(verifHaut(caseSelection));
+            //bougerPion(board.getCase(posX,posY), board.getCase(x,y));
+            mangerPion(caseSelection,this.board.getCase(x, y));
+
             caseSelection = null;
+            
 
-            bougerPion(board.getCase(posX,posY), board.getCase(x,y));
         }
 
 
@@ -133,6 +142,90 @@ public class Solitaire extends Game {
     }
 
 
+
+    public boolean verifHaut(Case c) {
+        // Il veut pas, à revoir au niveau des board.[...]
+        int x = c.getX();
+        int y = c.getY();
+
+        if ( y >= 2 && board.getCase(x, y - 1).getInGame() == true &&
+                board.getCase(x, y - 1).getValue() == 1 &&
+                board.getCase(x, y - 2).getInGame() == true &&
+                board.getCase(x, y - 2).getValue() == 0) {
+
+                    return true;
+
+        }
+        else  {
+                return false;
+        }
+    }
+
+
+    public boolean verifBas(Case c){
+        int x = c.getX();
+        int y = c.getY();
+        // -2 ou -3
+        if(y<=board.getDimY()-2 && board.getCase(x,y+1).getInGame()==true &&
+                board.getCase(x,y+1).getValue()==1 &&
+                board.getCase(x,y+2).getInGame()==true &&
+                board.getCase(x,y+2).getValue()==0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean verifGauche(Case c){
+        int x = c.getX();
+        int y = c.getY();
+        if(x>=2 && board.getCase(x-1,y).getInGame()==true &&
+                board.getCase(x-1,y).getValue()==1 &&
+                board.getCase(x-2,y).getInGame()==true &&
+                board.getCase(x-2,y).getValue()==0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean verifDroite(Case c){
+        int x = c.getX();
+        int y = c.getY();
+        // -2 ou -3
+        if(x<=board.getDimX()-2 && board.getCase(x+1,y).getInGame()==true &&
+                board.getCase(x+1,y).getValue()==1 &&
+                board.getCase(x+2,y).getInGame()==true &&
+                board.getCase(x+2,y).getValue()==0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public void mangerPion(Case c1, Case c2){
+        int x1 = c1.getX();
+        int x2 = c2.getX();
+        int y1 = c1.getY();
+        int y2 = c2.getY();
+
+
+        if((y2-y1)==(-2) && verifHaut(c1)==true){
+            bougerPion(board.getCase(x1, y1), board.getCase(x2, y2));
+            board.getCase(x1,y1-1).setValue(0);
+        }
+        else if((y2-y1)==(2) && verifBas(c1)==true){
+            bougerPion(board.getCase(x1, y1), board.getCase(x2, y2));
+            board.getCase(x1,y1+1).setValue(0);
+        }
+        else if((x2-x1)==(-2) && verifGauche(c1)==true){
+            bougerPion(board.getCase(x1, y1), board.getCase(x2, y2));
+            board.getCase(x1-1,y1).setValue(0);
+        }
+        else if((x2-x1)==(2) && verifDroite(c1)==true){
+            bougerPion(board.getCase(x1, y1), board.getCase(x2, y2));
+            board.getCase(x1+1,y1).setValue(0);
+        }
+    }
 
 
 
