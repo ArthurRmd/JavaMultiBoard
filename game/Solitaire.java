@@ -114,7 +114,6 @@ public class Solitaire extends Game {
         int posX, posY;
 
         if(!partieTermine) {
-
             if (board.getCase(x, y).isSelected()) {
                 this.board.getCase(x, y).setSelected(false);
             } else {
@@ -134,6 +133,7 @@ public class Solitaire extends Game {
                 posY = caseSelection.getY();
                 this.board.getCase(posX, posY).setSelected(false); // premier pion choisi ( celui qui va se déplacer
 
+
                 this.board.getCase(x, y).setSelected(false); // la deuxieme case chosi (vide)
                 System.out.println("\n\n" +  " Partie gagner --->  "+ partieGagne()+ "\n\n" );
 
@@ -143,7 +143,6 @@ public class Solitaire extends Game {
                 score += 10;
 
                 caseSelection = null;
-
                 System.out.println("Votre score est : " + score );
 
                 if(partiePerdu()){
@@ -157,6 +156,7 @@ public class Solitaire extends Game {
 
 
             }
+
 
         }
         else {
@@ -271,6 +271,51 @@ public class Solitaire extends Game {
         }
     }
 
+
+    public boolean partiePerdu() {
+
+        int tailleTableau = board.getDimX();
+
+        boolean continuer = false;
+        int i=0;
+        int j=0;
+
+        while (i<tailleTableau ){
+
+            while (j<tailleTableau ){
+
+               if ( board.getCase(i,j).getInGame() && board.getCase(i,j).getValue() == 1  ) {
+
+                   if (verifHaut(board.getCase(j, i)) ) {
+                       System.out.println("Haut" + i + " " + j);
+                       return true;
+
+                   }
+
+                   if (verifBas(board.getCase(j, i)) ) {
+                       System.out.println("Bas"+ i + " " + j);
+                       return true;
+
+                   }
+
+                   if (verifGauche(board.getCase(j, i)) ) {
+                       System.out.println("Gauche"+ i + " " + j);
+                       return true;
+                   }
+
+                   if (verifDroite(board.getCase(j, i)) ) {
+                       System.out.println("Droit"+ i + " " + j);
+                       return true;
+                   }
+
+               }
+                j++;
+            }
+            i++;
+        }
+
+        return continuer;
+    }
 
 
 
