@@ -108,6 +108,7 @@ public class Solitaire extends Game {
         int posX, posY;
 
 
+
         if ( board.getCase(x,y).isSelected()) {
             this.board.getCase(x,y).setSelected(false);
         }
@@ -115,11 +116,12 @@ public class Solitaire extends Game {
             this.board.getCase(x, y).setSelected(true);
         }
 
-        if (caseSelection == null || caseSelection == board.getCase(x,y) ){
+        if (caseSelection == null || caseSelection == board.getCase(x,y)){
             caseSelection = board.getCase(x,y);
         }
         else {
             System.out.println("Bonjour");
+            System.out.println(" Vous pouvez encore jouer ? : " + partiePerdu() + "\n\n");
 
             posX = caseSelection.getX();
             posY = caseSelection.getY();
@@ -128,11 +130,13 @@ public class Solitaire extends Game {
             this.board.getCase(x, y).setSelected(false); // la deuxieme case chosi (vide)
 
 
-            System.out.println(verifHaut(caseSelection));
+            //System.out.println(verifHaut(caseSelection));
             //bougerPion(board.getCase(posX,posY), board.getCase(x,y));
             mangerPion(caseSelection,this.board.getCase(x, y));
 
             caseSelection = null;
+
+
             
 
         }
@@ -148,7 +152,7 @@ public class Solitaire extends Game {
         int x = c.getX();
         int y = c.getY();
 
-        if ( y >= 2 && board.getCase(x, y - 1).getInGame() == true &&
+        if ( y >= 2 && board.getCase(x,y).getValue() == 1    && board.getCase(x, y - 1).getInGame() == true &&
                 board.getCase(x, y - 1).getValue() == 1 &&
                 board.getCase(x, y - 2).getInGame() == true &&
                 board.getCase(x, y - 2).getValue() == 0) {
@@ -166,7 +170,7 @@ public class Solitaire extends Game {
         int x = c.getX();
         int y = c.getY();
         // -2 ou -3
-        if(y<=board.getDimY()-2 && board.getCase(x,y+1).getInGame()==true &&
+        if(y<=board.getDimY()-2 &&  board.getCase(x,y).getValue() == 1    &&  board.getCase(x,y+1).getInGame()==true &&
                 board.getCase(x,y+1).getValue()==1 &&
                 board.getCase(x,y+2).getInGame()==true &&
                 board.getCase(x,y+2).getValue()==0){
@@ -179,7 +183,7 @@ public class Solitaire extends Game {
     public boolean verifGauche(Case c){
         int x = c.getX();
         int y = c.getY();
-        if(x>=2 && board.getCase(x-1,y).getInGame()==true &&
+        if(x>=2 &&  board.getCase(x,y).getValue() == 1    &&  board.getCase(x-1,y).getInGame()==true &&
                 board.getCase(x-1,y).getValue()==1 &&
                 board.getCase(x-2,y).getInGame()==true &&
                 board.getCase(x-2,y).getValue()==0){
@@ -192,7 +196,7 @@ public class Solitaire extends Game {
         int x = c.getX();
         int y = c.getY();
         // -2 ou -3
-        if(x<=board.getDimX()-2 && board.getCase(x+1,y).getInGame()==true &&
+        if(x<=board.getDimX()-2 &&  board.getCase(x,y).getValue() == 1    &&  board.getCase(x+1,y).getInGame()==true &&
                 board.getCase(x+1,y).getValue()==1 &&
                 board.getCase(x+2,y).getInGame()==true &&
                 board.getCase(x+2,y).getValue()==0){
@@ -227,6 +231,51 @@ public class Solitaire extends Game {
         }
     }
 
+
+    public boolean partiePerdu() {
+
+        int tailleTableau = board.getDimX();
+
+        boolean continuer = false;
+        int i=0;
+        int j=0;
+
+        while (i<tailleTableau ){
+
+            while (j<tailleTableau ){
+
+               if ( board.getCase(i,j).getInGame() && board.getCase(i,j).getValue() == 1  ) {
+
+                   if (verifHaut(board.getCase(j, i)) ) {
+                       System.out.println("Haut" + i + " " + j);
+                       return true;
+
+                   }
+
+                   if (verifBas(board.getCase(j, i)) ) {
+                       System.out.println("Bas"+ i + " " + j);
+                       return true;
+
+                   }
+
+                   if (verifGauche(board.getCase(j, i)) ) {
+                       System.out.println("Gauche"+ i + " " + j);
+                       return true;
+                   }
+
+                   if (verifDroite(board.getCase(j, i)) ) {
+                       System.out.println("Droit"+ i + " " + j);
+                       return true;
+                   }
+
+               }
+                j++;
+            }
+            i++;
+        }
+
+        return continuer;
+    }
 
 
     public void remplir (int x) {
