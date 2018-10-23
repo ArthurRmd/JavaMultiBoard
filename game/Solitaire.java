@@ -18,12 +18,16 @@ import java.util.ArrayList;
 public class Solitaire extends Game {
 
     Case caseSelection = null;
+    boolean partieTermine = false;
+    int score = 0;
 
     public Solitaire(int x, int y) {
         board = new Board(x, y, "solitaire");
 
         int dimX = board.getDimX();
         int dimY = board.getDimY();
+
+
 
 
         System.out.println(board.getDimX()+ "\n\n");
@@ -33,8 +37,10 @@ public class Solitaire extends Game {
        board.getCase(0,0).canGo();
 
 
+
+
         System.out.println(board.getCase(0,0).isEmpty());
-        this.remplir(x);
+        this.remplir();
 
        // bougerPion(board.getCase(4,4), board.getCase(3,3));
 
@@ -107,36 +113,63 @@ public class Solitaire extends Game {
 
         int posX, posY;
 
+        if(!partieTermine) {
 
-        if ( board.getCase(x,y).isSelected()) {
-            this.board.getCase(x,y).setSelected(false);
+            if (board.getCase(x, y).isSelected()) {
+                this.board.getCase(x, y).setSelected(false);
+            } else {
+                this.board.getCase(x, y).setSelected(true);
+            }
+
+            if (caseSelection == null ) {
+                caseSelection = board.getCase(x, y);
+
+            }
+            else if (caseSelection == board.getCase(x,y)){
+                caseSelection = null;
+            }
+            else {
+
+                posX = caseSelection.getX();
+                posY = caseSelection.getY();
+                this.board.getCase(posX, posY).setSelected(false); // premier pion choisi ( celui qui va se déplacer
+
+                this.board.getCase(x, y).setSelected(false); // la deuxieme case chosi (vide)
+                System.out.println("\n\n" +  " Partie gagner --->  "+ partieGagne()+ "\n\n" );
+
+                //System.out.println(verifHaut(caseSelection));
+                //bougerPion(board.getCase(posX,posY), board.getCase(x,y));
+                mangerPion(caseSelection, this.board.getCase(x, y));
+                score += 10;
+
+                caseSelection = null;
+
+                System.out.println("Votre score est : " + score );
+
+                if(partiePerdu()){
+                    partieTermine = true;
+                    System.out.println("\n Vous avez perdu, vous pouvez retenter votre chance");
+                }
+                if(partieGagne()){
+                    partieTermine = true;
+                    System.out.println("\n Vous avez gagner bravo");
+                }
+
+
+            }
+
         }
         else {
-            this.board.getCase(x, y).setSelected(true);
+
+            if(partieGagne()){
+                System.out.println("\n Vous avez gagner bravo");
+            }
+            else {
+                System.out.println("\n Vous avez perdu, vous pouvez retenter votre chance");
+
+            }
+            System.out.println("Votre score est : " + score );
         }
-
-        if (caseSelection == null || caseSelection == board.getCase(x,y) ){
-            caseSelection = board.getCase(x,y);
-        }
-        else {
-            System.out.println("Bonjour");
-
-            posX = caseSelection.getX();
-            posY = caseSelection.getY();
-            this.board.getCase(posX, posY).setSelected(false); // premier pion choisi ( celui qui va se déplacer
-
-            this.board.getCase(x, y).setSelected(false); // la deuxieme case chosi (vide)
-
-
-            System.out.println(verifHaut(caseSelection));
-            //bougerPion(board.getCase(posX,posY), board.getCase(x,y));
-            mangerPion(caseSelection,this.board.getCase(x, y));
-
-            caseSelection = null;
-            
-
-        }
-
 
 
     }
@@ -148,7 +181,7 @@ public class Solitaire extends Game {
         int x = c.getX();
         int y = c.getY();
 
-        if ( y >= 2 && board.getCase(x, y - 1).getInGame() == true &&
+        if ( y >= 2 && board.getCase(x,y).getValue() == 1    && board.getCase(x, y - 1).getInGame() == true &&
                 board.getCase(x, y - 1).getValue() == 1 &&
                 board.getCase(x, y - 2).getInGame() == true &&
                 board.getCase(x, y - 2).getValue() == 0) {
@@ -166,7 +199,7 @@ public class Solitaire extends Game {
         int x = c.getX();
         int y = c.getY();
         // -2 ou -3
-        if(y<=board.getDimY()-2 && board.getCase(x,y+1).getInGame()==true &&
+        if(y<= (board.getDimY()-3) &&  board.getCase(x,y).getValue() == 1    &&  board.getCase(x,y+1).getInGame()==true &&
                 board.getCase(x,y+1).getValue()==1 &&
                 board.getCase(x,y+2).getInGame()==true &&
                 board.getCase(x,y+2).getValue()==0){
@@ -179,7 +212,7 @@ public class Solitaire extends Game {
     public boolean verifGauche(Case c){
         int x = c.getX();
         int y = c.getY();
-        if(x>=2 && board.getCase(x-1,y).getInGame()==true &&
+        if(x>=2 &&  board.getCase(x,y).getValue() == 1    &&  board.getCase(x-1,y).getInGame()==true &&
                 board.getCase(x-1,y).getValue()==1 &&
                 board.getCase(x-2,y).getInGame()==true &&
                 board.getCase(x-2,y).getValue()==0){
@@ -192,7 +225,7 @@ public class Solitaire extends Game {
         int x = c.getX();
         int y = c.getY();
         // -2 ou -3
-        if(x<=board.getDimX()-2 && board.getCase(x+1,y).getInGame()==true &&
+        if(x<=(board.getDimX()-3) &&  board.getCase(x,y).getValue() == 1    &&  board.getCase(x+1,y).getInGame()==true &&
                 board.getCase(x+1,y).getValue()==1 &&
                 board.getCase(x+2,y).getInGame()==true &&
                 board.getCase(x+2,y).getValue()==0){
@@ -210,27 +243,149 @@ public class Solitaire extends Game {
 
 
         if((y2-y1)==(-2) && verifHaut(c1)==true){
-            bougerPion(board.getCase(x1, y1), board.getCase(x2, y2));
-            board.getCase(x1,y1-1).setValue(0);
+
+            if (x1==x2) {
+                bougerPion(board.getCase(x1, y1), board.getCase(x2, y2));
+                board.getCase(x1, y1 - 1).setValue(0);
+            }
         }
         else if((y2-y1)==(2) && verifBas(c1)==true){
-            bougerPion(board.getCase(x1, y1), board.getCase(x2, y2));
-            board.getCase(x1,y1+1).setValue(0);
+
+            if (x1==x2) {
+                bougerPion(board.getCase(x1, y1), board.getCase(x2, y2));
+                board.getCase(x1, y1 + 1).setValue(0);
+            }
         }
         else if((x2-x1)==(-2) && verifGauche(c1)==true){
-            bougerPion(board.getCase(x1, y1), board.getCase(x2, y2));
-            board.getCase(x1-1,y1).setValue(0);
+
+            if (y1==y2) {
+                bougerPion(board.getCase(x1, y1), board.getCase(x2, y2));
+                board.getCase(x1 - 1, y1).setValue(0);
+            }
         }
         else if((x2-x1)==(2) && verifDroite(c1)==true){
-            bougerPion(board.getCase(x1, y1), board.getCase(x2, y2));
-            board.getCase(x1+1,y1).setValue(0);
+            if (y1==y2) {
+                bougerPion(board.getCase(x1, y1), board.getCase(x2, y2));
+                board.getCase(x1 + 1, y1).setValue(0);
+            }
         }
     }
 
 
 
-    public void remplir (int x) {
 
+    public boolean verifCotes (Case c){
+       if (verifHaut(c) || verifBas(c) || verifGauche(c) || verifDroite(c))
+            return true;
+        else
+            return false;
+    }
+
+
+
+    public boolean partiePerdu () {
+
+        int x = board.getDimX();
+        int i;
+        int j;
+        int valeurHaut =  ((x - 3)/2); // 7 -> 2
+        int valeurBas =  ((x - 3)/2); // 7 -> 2
+        int valeur =  ((x - 3)/2); // 7 -> 2
+
+        int valeurGauche = ((x - 3)/2) - 1; // 7 -> 2
+        int valeurDroite =  1;
+
+        boolean partiePerdu = true;
+
+
+
+        System.out.println(valeurHaut);
+
+        for ( i=0 ; i<x; i++) {
+
+            if (i > (valeur + 3)) {
+                valeurGauche--;
+                valeurDroite++;
+            }
+
+            for ( j=0 ; j<x; j++) {
+
+                if ( i < valeur){
+
+                    if (j >= valeurHaut && j< ( x-valeurHaut)){
+
+                        if(verifCotes(board.getCase(i,j)))
+                            return false;
+
+                    }
+
+
+                }
+                else if (i >= (x - valeur)){
+
+                    if (j >= (valeurBas - valeurGauche) && j< ( x- valeurDroite)){
+                        if(verifCotes(board.getCase(i,j)))
+                            return false;
+                    }
+
+                }
+                else {
+                    if(verifCotes(board.getCase(i,j)))
+                        return false;
+                }
+
+
+
+
+            }
+
+            valeurHaut--;
+
+        }
+
+        return partiePerdu;
+
+
+
+
+    }
+
+    public boolean partieGagne(){
+
+        int i = 0;
+        int j = 0;
+        int nbPion = 0;
+        boolean continuer = true;
+        boolean gagner = true;
+
+
+        while( i< board.getDimX() && continuer ){
+
+
+            while (j< board.getDimX() && continuer){
+
+                if (board.getCase(i,j).getValue() == 1 ){
+                    nbPion++;
+
+                }
+                if (nbPion > 6){
+                    continuer = false;
+                    gagner = false;
+                    System.out.println("Ajout");
+                }
+                j++;
+            }
+            j=0;
+            i++;
+        }
+
+        System.out.println(nbPion);
+        return gagner;
+    }
+
+    public void remplir () {
+
+        int x = board.getDimX();
         int i;
         int j;
         int valeurHaut =  ((x - 3)/2); // 7 -> 2
