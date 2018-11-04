@@ -4,6 +4,7 @@ import gui.JBoard;
 
 import javax.swing.*;
 
+
 /**
  * Représente un plateau de jeu
  *
@@ -37,38 +38,19 @@ public class Board {
                 board[i][j] = new Case(i, j);
             }
         }
-
-
-
-
     }
-
 
     public Board(int dimX, int dimY, String jeu) {
 
-
-
-
-
-            this.dimX = dimX;
-            this.dimY = dimY;
-            board = new Case[dimX][dimY];
-            for (int i = 0; i < dimX; i++) {
-                for (int j = 0; j < dimY; j++) {
-                    board[i][j] = new Case(i, j);
-                }
+        this.dimX = dimX;
+        this.dimY = dimY;
+        board = new Case[dimX][dimY];
+        for (int i = 0; i < dimX; i++) {
+            for (int j = 0; j < dimY; j++) {
+                board[i][j] = new Case(i, j);
             }
-
-
+        }
     }
-
-
-
-
-
-
-
-
 
     /**
      * La case de coordonnées x, y
@@ -109,9 +91,5 @@ public class Board {
     public int getValue(int x, int y) {
         return this.board[x][y].getValue();
     }
-
-
-
-
 
 }

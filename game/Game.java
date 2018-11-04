@@ -1,6 +1,7 @@
 package game;
 
 import gui.Arbiter;
+
 import java.awt.Color;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import java.util.List;
  * Classe qui représente un jeu abstrait.
  * @author samuel
  */
-
 public abstract class Game {
 
     protected Board board;

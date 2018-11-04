@@ -1,18 +1,22 @@
 package gui;
 
 import observer.Observer;
+
 import game.Case;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Paint;
 
 import javax.swing.JPanel;
 
 import java.util.List;
 import java.util.ArrayList;
+
 
 /**
  * Classe permettant d'afficher une case.
@@ -29,7 +33,9 @@ public class JCase extends JPanel implements Observer {
     private List<Color> colorPawnList = new ArrayList<>();
 
     public void setColorPawnList(List<Color> colorPawnList) {
+
         this.colorPawnList = colorPawnList;
+
     }
 
     /**
@@ -46,15 +52,14 @@ public class JCase extends JPanel implements Observer {
         this.color = color;
 
         colorPawnList.add(Color.WHITE);
-        colorPawnList.add(Color.BLACK);
+        colorPawnList.add(Color.GRAY);
 
         addMouseListener(a);
         
         // écoute des évenements de la case
         c.addObserver(this);
+
     }
-
-
 
     public JCase(Case c, Color color, Arbiter a , Color co) {
 
@@ -68,17 +73,18 @@ public class JCase extends JPanel implements Observer {
 
         // écoute des évenements de la case
         c.addObserver(this);
+
     }
-
-
 
     /**
      * Méthode de l'interface Observer
      */
     @Override
     public void update() {
+
         this.revalidate();
         this.repaint();
+
     }
 
     /**
@@ -87,19 +93,20 @@ public class JCase extends JPanel implements Observer {
      * @param g contexte graphique
      */
     @Override
-
     public void paintComponent(Graphics g) {
 
         Paint paint;
         Graphics2D g2d;
 
         try {
+
             g2d = (Graphics2D) g;
 
             Color c1 = Color.black;
             Color c2 = color;
 
             paint = new GradientPaint(0, 0, c1, getWidth(), getHeight(), c2);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setPaint(paint);
 
             g.fillRect(0, 0, getWidth(), getHeight());
@@ -116,13 +123,14 @@ public class JCase extends JPanel implements Observer {
                 g2.setStroke(new BasicStroke(thickness));
                 g2.setColor(Color.RED);
                 g2.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-
             }
 
         } catch (Exception e) {
+
             System.err.println("error");
 
         }
+
     }
 
 }

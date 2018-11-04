@@ -1,13 +1,16 @@
 package gui;
 
 import game.Game;
+
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JOptionPane;
+
 
 /**
  * Classe qui gère l'interface entre la logique du jeu et l'interface graphique.
@@ -38,6 +41,7 @@ public class Arbiter extends MouseAdapter {
             component = component.getParent();
         } while (!(component instanceof Frame));
         return (Frame) component;
+
     }
 
     @Override

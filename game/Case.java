@@ -2,8 +2,10 @@ package game;
 
 import observer.Observable;
 import observer.Observer;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Classe qui représente une Case.
@@ -38,6 +40,7 @@ public class Case implements Observable {
      * Indique si la case est utilisable dans un jeu
      */
     private boolean inGame;
+
     /**
      * Cosntructeur.
      *
@@ -50,7 +53,6 @@ public class Case implements Observable {
         this.pionSpecial = 0;
         this.inGame = true;
     }
-
 
     /**
      * liste des observer
@@ -126,61 +128,46 @@ public class Case implements Observable {
         return "(" + posX + "," + posY + ")";
     }
 
+    public void setSelected(boolean selected) {
 
-
-    public void setSelected (boolean selected) {
-
-        if (this.canGo()){
+        if (this.canGo()) {
             this.selected = selected;
             this.notifyObservers();
         }
         else {
             System.out.println("Case hors jeu");
         }
-
     }
 
-
-    public void setPionSpecial (int x){
+    public void setPionSpecial(int x) {
         this.pionSpecial = x;
     }
 
-    public int getPionSpecial (){
+    public int getPionSpecial() {
         return pionSpecial;
     }
 
-
-
-
-    public boolean canGo () {
-
+    public boolean canGo() {
         return (this.inGame);
-
     }
 
-    public void setInGame(boolean bool){
+    public void setInGame(boolean bool) {
         this.inGame = bool;
     }
-    public boolean getInGame(){
+    public boolean getInGame() {
         return this.inGame;
     }
 
-
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return(this.value == 0);
     }
 
-
-    public int getX (){
+    public int getX() {
         return this.posX;
     }
 
-    public int getY (){
+    public int getY() {
         return this.posY;
     }
-
-
-
-
 
 }
